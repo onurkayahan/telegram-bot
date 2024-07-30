@@ -1,4 +1,10 @@
-import { Controller, Get, UseGuards, Req } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  UseGuards,
+  Req,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from './user.entity';
 import { AuthGuard } from '@nestjs/passport';
@@ -9,9 +15,15 @@ export class UserController {
 
   @UseGuards(AuthGuard('jwt'))
   @Get()
-  findAll(@Req() req): Promise<User[]> {
-    console.log(req);
-    return this.userService.findAll();
+  async findAll(@Req() req): Promise<User[]> {
+    const userTelegramID = req.user.telegramID;
+
+    const user = await this.userService.findOne(userTelegramID);
+    if (user.isAdmin) {
+      return this.userService.findAll();
+    } else {
+      throw new UnauthorizedException('Invalid credentials');
+    }
   }
 
   @Get('profile')

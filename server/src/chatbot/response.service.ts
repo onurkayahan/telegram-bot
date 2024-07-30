@@ -7,15 +7,18 @@ export class ResponseService {
   constructor() {}
 
   private responses = {
-    '/hello': 'Hello! How can I assist you today?',
-    '/helloadmin': 'Hi there! How can I help you?',
+    '/hello': 'Hello',
+    '/hi': 'Hi',
   };
 
   async generateResponse(message: Message, user: User) {
+    if (user.isAdmin && message.content === '/helloadmin') {
+      return 'Hello from admin!';
+    }
     // Generate a response based on the message content
     const responseText = this.getResponse(message.content);
-    const response = `${responseText} ${user.name}`;
-    return response;
+
+    return `${responseText} ${user.name}!`;
   }
 
   getResponse(content: string): string {

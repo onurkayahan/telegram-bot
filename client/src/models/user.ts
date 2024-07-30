@@ -4,4 +4,5 @@ export type User = {
 	password: string;
 	token: string;
 	createdAt: Date;
+	isAdmin: boolean;
 };

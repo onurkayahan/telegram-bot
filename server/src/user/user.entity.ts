@@ -18,7 +18,7 @@ export class User {
   token: string;
 
   @Column({ default: false })
-  isAdmin: string;
+  isAdmin: boolean;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;

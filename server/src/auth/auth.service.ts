@@ -26,10 +26,9 @@ export class AuthService {
   }
 
   async register(telegramID: string, name: string, password: string) {
-    const hashedPassword = await bcrypt.hash(password, 5);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    const payload = { telegramID, name };
-    const token = this.jwtService.sign(payload);
+    const token = this.createToken(telegramID, name, false);
 
     const user = await this.userService.create({
       telegramID,
@@ -41,5 +40,9 @@ export class AuthService {
     delete user.id;
 
     return user;
+  }
+
+  createToken(telegramID: string, name: string, isAdmin: boolean) {
+    return this.jwtService.sign({ telegramID, name, isAdmin });
   }
 }

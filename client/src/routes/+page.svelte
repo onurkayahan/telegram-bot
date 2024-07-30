@@ -25,7 +25,6 @@
 
 	async function getMessages() {
 		const response = await api.get('/messages');
-		console.log(response.data);
 
 		response.data.forEach((message: Message) => {
 			messages = [...messages, { from: 'user', text: message.content, id: uuidv4() }];
@@ -83,5 +82,8 @@
 		max-width: 100%;
 		overflow-y: auto;
 		margin-bottom: 3.5rem;
+		& > * {
+			margin: 0.5rem;
+		}
 	}
 </style>
